@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import Analytics from '@vercel/analytics/astro';
 
 const title = "Forge — by Carlo Perottino";
 const description =
@@ -34,6 +35,8 @@ const url = "https://forge.carloperottino.com/";
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+
+    <Analytics />
   </head>
   <body
     class="relative min-h-screen flex flex-col font-sans text-[color:var(--color-fg)]"
