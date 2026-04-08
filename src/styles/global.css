@@ -1,21 +1,66 @@
 @import "tailwindcss";
 
-@theme {
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-
-  --color-bg: #0a0a0a;
-  --color-fg: #f0ece6;
-  --color-muted: #8b847c;
-  --color-subtle: #5a544e;
-  --color-border: #1f1b17;
-  --color-ember: #e07a3c;
-  --color-ember-bright: #f59340;
+@property --border-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
 }
 
+/* ─── Theme tokens (dark mode default) ─── */
+@theme {
+  /* Accent — ember orange (forge's signature, sibling-not-copy of carlo.com gold) */
+  --color-accent: #e07a3c;
+  --color-accent-light: #f59340;
+  --color-accent-dim: #e07a3c26;
+
+  /* Surfaces */
+  --color-surface: #0a0a0a;
+  --color-surface-2: #111111;
+  --color-surface-3: #1a1a1a;
+
+  /* Text */
+  --color-cream: #f0ece6;
+  --color-warm-gray: #8b847c;
+  --color-warm-dim: #5a544e;
+
+  /* Misc */
+  --color-overlay: #ffffff;
+  --color-border: #1f1b17;
+
+  /* Back-compat aliases for the existing anvil SVG */
+  --color-ember: #e07a3c;
+  --color-ember-bright: #f59340;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* ─── Light mode overrides ─── */
+:root:not(.dark) {
+  --color-accent: #b85a1f;
+  --color-accent-light: #c8531a;
+  --color-accent-dim: #b85a1f26;
+
+  --color-surface: #faf8f5;
+  --color-surface-2: #f0ece6;
+  --color-surface-3: #e5e0d8;
+
+  --color-cream: #1c1917;
+  --color-warm-gray: #57534e;
+  --color-warm-dim: #78716c;
+
+  --color-overlay: #000000;
+  --color-border: #d6d0c4;
+
+  --color-ember: #b85a1f;
+  --color-ember-bright: #c8531a;
+}
+
+/* ─── Base ─── */
 html {
-  background-color: var(--color-bg);
-  color: var(--color-fg);
+  scroll-behavior: smooth;
+  background: var(--color-surface);
+  color: var(--color-cream);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -23,21 +68,125 @@ html {
 }
 
 body {
-  background-color: var(--color-bg);
-  color: var(--color-fg);
+  font-family: var(--font-sans);
+  background: var(--color-surface);
+  color: var(--color-cream);
 }
 
-/* Subtle warm vignette so the dark background isn't dead flat */
-body::before {
-  content: "";
+/* ─── Grain texture overlay ─── */
+body::after {
+  content: '';
   position: fixed;
   inset: 0;
+  z-index: 10000;
   pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+/* ─── Aurora background (ember-toned for forge) ─── */
+@keyframes aurora {
+  0%, 100% { background-position: 0% 50%, 50% 100%, 100% 0%; }
+  33% { background-position: 100% 50%, 0% 50%, 50% 100%; }
+  66% { background-position: 50% 100%, 100% 0%, 0% 50%; }
+}
+
+.aurora-bg::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
   background:
-    radial-gradient(
-      ellipse at 50% 30%,
-      rgba(224, 122, 60, 0.06) 0%,
-      rgba(224, 122, 60, 0) 55%
-    );
-  z-index: 0;
+    radial-gradient(ellipse at 20% 50%, rgba(224, 122, 60, 0.10) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(224, 122, 60, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(245, 147, 64, 0.04) 0%, transparent 50%);
+  background-size: 200% 200%, 200% 200%, 200% 200%;
+  animation: aurora 20s ease-in-out infinite;
+  pointer-events: none;
+}
+
+:root:not(.dark) .aurora-bg::before {
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(184, 90, 31, 0.07) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(184, 90, 31, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(200, 83, 26, 0.03) 0%, transparent 50%);
+}
+
+/* ─── Gradient text (ember) ─── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 50%, var(--color-accent) 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 6s ease-in-out infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ─── Hero entrance animations ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); filter: blur(6px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.hero-enter { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.hero-enter-1 { animation-delay: 0.1s; }
+.hero-enter-2 { animation-delay: 0.25s; }
+.hero-enter-3 { animation-delay: 0.4s; }
+.hero-enter-4 { animation-delay: 0.55s; }
+.hero-enter-5 { animation-delay: 0.7s; }
+.hero-enter-6 { animation-delay: 0.85s; }
+
+/* ─── Accent gradient line ─── */
+.accent-gradient {
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+}
+
+/* ─── Ember pulse for the coming-soon dot ─── */
+@keyframes ember-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+.ember-dot {
+  animation: ember-pulse 2.6s ease-in-out infinite;
+  box-shadow: 0 0 8px var(--color-accent-dim);
+}
+
+/* ─── Anvil ember glow ─── */
+.ember-glow {
+  filter: drop-shadow(0 0 4px rgba(224, 122, 60, 0.6));
+}
+:root:not(.dark) .ember-glow {
+  filter: drop-shadow(0 0 4px rgba(184, 90, 31, 0.5));
+}
+
+/* ─── Selection ─── */
+.dark ::selection {
+  background: rgba(224, 122, 60, 0.3);
+  color: #fff;
+}
+:root:not(.dark) ::selection {
+  background: rgba(184, 90, 31, 0.25);
+  color: #1c1917;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+.dark::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+.dark::-webkit-scrollbar-thumb:hover { background: #555; }
+:root:not(.dark)::-webkit-scrollbar-thumb { background: #c5c0b8; border-radius: 3px; }
+:root:not(.dark)::-webkit-scrollbar-thumb:hover { background: #a5a09a; }
+
+/* ─── Accessibility ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

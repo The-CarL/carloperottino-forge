@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import Analytics from '@vercel/analytics/astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
 
 const title = "Forge — by Carlo Perottino";
 const description =
@@ -14,6 +15,15 @@ const url = "https://forge.carloperottino.com/";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+    <script is:inline>
+      (function() {
+        const theme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (theme === 'dark' || (!theme && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#0a0a0a" />
@@ -39,17 +49,21 @@ const url = "https://forge.carloperottino.com/";
     <Analytics />
   </head>
   <body
-    class="relative min-h-screen flex flex-col font-sans text-[color:var(--color-fg)]"
+    class="relative min-h-screen flex flex-col font-sans text-cream antialiased overflow-x-hidden"
   >
+    <div class="fixed top-5 right-5 z-50">
+      <ThemeToggle />
+    </div>
+
     <main
-      class="relative z-10 flex-1 flex items-center justify-center px-6 py-20"
+      class="aurora-bg relative overflow-hidden z-10 flex-1 flex items-center justify-center px-6 py-20"
     >
       <div class="flex flex-col items-center text-center max-w-md">
         <!-- Anvil hero mark -->
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 70 52"
-          class="w-32 sm:w-36 h-auto mb-10 text-[color:var(--color-fg)]"
+          class="w-32 sm:w-36 h-auto mb-10 text-cream hero-enter hero-enter-1"
           aria-hidden="true"
         >
           <circle
@@ -57,7 +71,7 @@ const url = "https://forge.carloperottino.com/";
             cy="6"
             r="2.6"
             fill="var(--color-ember)"
-            class="ember"></circle>
+            class="ember-glow"></circle>
           <path
             d="M4 19 L14 13 L64 13 L64 27 L14 27 Z"
             fill="currentColor"></path>
@@ -69,25 +83,25 @@ const url = "https://forge.carloperottino.com/";
         </svg>
 
         <h1
-          class="text-7xl sm:text-8xl font-bold tracking-[-0.035em] leading-none mb-4"
+          class="text-7xl sm:text-8xl font-bold tracking-[-0.035em] leading-none mb-4 hero-enter hero-enter-2"
         >
-          Forge
+          <span class="gradient-text">Forge</span>
         </h1>
 
         <p
-          class="font-mono text-[11px] uppercase tracking-[0.3em] text-[color:var(--color-muted)] mb-10"
+          class="font-mono text-[11px] uppercase tracking-[0.3em] text-warm-gray mb-10 hero-enter hero-enter-3"
         >
           by Carlo Perottino
         </p>
 
         <div
-          class="w-12 h-px bg-[color:var(--color-border)] mb-10"
+          class="w-20 h-[2px] mb-10 accent-gradient hero-enter hero-enter-4"
           aria-hidden="true"
         >
         </div>
 
         <p
-          class="text-base sm:text-lg leading-relaxed text-[color:var(--color-muted)] mb-12 max-w-sm"
+          class="text-base sm:text-lg leading-relaxed text-warm-gray mb-12 max-w-sm hero-enter hero-enter-5"
         >
           A workshop for building, refining, and shipping ideas. <br
             class="hidden sm:block"
@@ -96,10 +110,10 @@ const url = "https://forge.carloperottino.com/";
         </p>
 
         <p
-          class="font-mono text-[11px] uppercase tracking-[0.3em] text-[color:var(--color-ember)] mb-16 inline-flex items-center gap-3"
+          class="font-mono text-[11px] uppercase tracking-[0.3em] text-accent mb-16 inline-flex items-center gap-3 hero-enter hero-enter-6"
         >
           <span
-            class="inline-block w-1.5 h-1.5 rounded-full bg-[color:var(--color-ember)] ember-dot"
+            class="inline-block w-1.5 h-1.5 rounded-full bg-accent ember-dot"
           ></span>
           Coming Soon
         </p>
@@ -109,37 +123,11 @@ const url = "https://forge.carloperottino.com/";
     <footer class="relative z-10 px-6 pb-10 flex justify-center">
       <a
         href="https://carloperottino.com"
-        class="font-mono text-[11px] uppercase tracking-[0.25em] text-[color:var(--color-subtle)] hover:text-[color:var(--color-ember)] transition-colors duration-300 inline-flex items-center gap-2"
+        class="font-mono text-[11px] uppercase tracking-[0.25em] text-warm-dim hover:text-accent transition-colors duration-300 inline-flex items-center gap-2"
       >
         <span aria-hidden="true">←</span>
         carloperottino.com
       </a>
     </footer>
-
-    <style>
-      .ember {
-        filter: drop-shadow(0 0 4px rgba(224, 122, 60, 0.6));
-      }
-      .ember-dot {
-        animation: ember-pulse 2.6s ease-in-out infinite;
-        box-shadow: 0 0 8px rgba(224, 122, 60, 0.6);
-      }
-      @keyframes ember-pulse {
-        0%,
-        100% {
-          opacity: 0.55;
-          transform: scale(1);
-        }
-        50% {
-          opacity: 1;
-          transform: scale(1.15);
-        }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        .ember-dot {
-          animation: none;
-        }
-      }
-    </style>
   </body>
 </html>
