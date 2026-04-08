@@ -1,0 +1,142 @@
+---
+import "../styles/global.css";
+
+const title = "Forge — by Carlo Perottino";
+const description =
+  "A builder's forge. Project catalog and launchpad — coming soon.";
+const url = "https://forge.carloperottino.com/";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0a0a0a" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={url} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+  </head>
+  <body
+    class="relative min-h-screen flex flex-col font-sans text-[color:var(--color-fg)]"
+  >
+    <main
+      class="relative z-10 flex-1 flex items-center justify-center px-6 py-20"
+    >
+      <div class="flex flex-col items-center text-center max-w-md">
+        <!-- Anvil hero mark -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 70 52"
+          class="w-32 sm:w-36 h-auto mb-10 text-[color:var(--color-fg)]"
+          aria-hidden="true"
+        >
+          <circle
+            cx="56"
+            cy="6"
+            r="2.6"
+            fill="var(--color-ember)"
+            class="ember"></circle>
+          <path
+            d="M4 19 L14 13 L64 13 L64 27 L14 27 Z"
+            fill="currentColor"></path>
+          <rect x="32" y="27" width="14" height="6" fill="currentColor"
+          ></rect>
+          <path
+            d="M32 33 L46 33 L60 49 L18 49 Z"
+            fill="currentColor"></path>
+        </svg>
+
+        <h1
+          class="text-7xl sm:text-8xl font-bold tracking-[-0.035em] leading-none mb-4"
+        >
+          Forge
+        </h1>
+
+        <p
+          class="font-mono text-[11px] uppercase tracking-[0.3em] text-[color:var(--color-muted)] mb-10"
+        >
+          by Carlo Perottino
+        </p>
+
+        <div
+          class="w-12 h-px bg-[color:var(--color-border)] mb-10"
+          aria-hidden="true"
+        >
+        </div>
+
+        <p
+          class="text-base sm:text-lg leading-relaxed text-[color:var(--color-muted)] mb-12 max-w-sm"
+        >
+          A workshop for building, refining, and shipping ideas. <br
+            class="hidden sm:block"
+          />
+          Where things get made.
+        </p>
+
+        <p
+          class="font-mono text-[11px] uppercase tracking-[0.3em] text-[color:var(--color-ember)] mb-16 inline-flex items-center gap-3"
+        >
+          <span
+            class="inline-block w-1.5 h-1.5 rounded-full bg-[color:var(--color-ember)] ember-dot"
+          ></span>
+          Coming Soon
+        </p>
+      </div>
+    </main>
+
+    <footer class="relative z-10 px-6 pb-10 flex justify-center">
+      <a
+        href="https://carloperottino.com"
+        class="font-mono text-[11px] uppercase tracking-[0.25em] text-[color:var(--color-subtle)] hover:text-[color:var(--color-ember)] transition-colors duration-300 inline-flex items-center gap-2"
+      >
+        <span aria-hidden="true">←</span>
+        carloperottino.com
+      </a>
+    </footer>
+
+    <style>
+      .ember {
+        filter: drop-shadow(0 0 4px rgba(224, 122, 60, 0.6));
+      }
+      .ember-dot {
+        animation: ember-pulse 2.6s ease-in-out infinite;
+        box-shadow: 0 0 8px rgba(224, 122, 60, 0.6);
+      }
+      @keyframes ember-pulse {
+        0%,
+        100% {
+          opacity: 0.55;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.15);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .ember-dot {
+          animation: none;
+        }
+      }
+    </style>
+  </body>
+</html>
