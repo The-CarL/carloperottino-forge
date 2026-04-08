@@ -164,6 +164,20 @@ body::after {
   filter: drop-shadow(0 0 4px rgba(184, 90, 31, 0.5));
 }
 
+/* ─── Ember sparks above the anvil (struck moment) ─── */
+@keyframes ember-spark {
+  0%, 100% { opacity: 0.3; transform: translateY(0) scale(0.9); }
+  50%      { opacity: 1;   transform: translateY(-1px) scale(1.15); }
+}
+.ember-spark-1 {
+  animation: ember-spark 3.2s ease-in-out infinite;
+  transform-origin: center;
+}
+.ember-spark-2 {
+  animation: ember-spark 3.2s ease-in-out infinite 0.8s;
+  transform-origin: center;
+}
+
 /* ─── Selection ─── */
 .dark ::selection {
   background: rgba(224, 122, 60, 0.3);
