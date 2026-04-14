@@ -1,0 +1,72 @@
+---
+import '../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** When true, body uses normal flow instead of centered flex */
+  fullPage?: boolean;
+}
+
+const {
+  title = 'Forge — by Carlo Perottino',
+  description = "A builder's forge. Project catalog and launchpad — coming soon.",
+  fullPage = false,
+} = Astro.props;
+
+const url = 'https://forge.carloperottino.com/';
+
+const bodyClass = fullPage
+  ? 'relative min-h-screen font-sans text-cream antialiased overflow-x-hidden'
+  : 'relative min-h-screen flex flex-col font-sans text-cream antialiased overflow-x-hidden';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <script is:inline>
+      (function() {
+        const theme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (theme === 'dark' || (!theme && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0a0a0a" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={url} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <Analytics />
+  </head>
+  <body class={bodyClass}>
+    <div class="fixed top-5 right-5 z-50">
+      <ThemeToggle />
+    </div>
+
+    <slot />
+  </body>
+</html>
