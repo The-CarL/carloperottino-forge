@@ -1,0 +1,22 @@
+---
+interface Props {
+  tags: string[];
+  compact?: boolean;
+  class?: string;
+}
+
+const { tags, compact = false, class: className } = Astro.props;
+---
+
+<div class:list={['flex flex-wrap gap-2', className]}>
+  {tags.map((tag) => (
+    <span
+      class:list={[
+        'rounded-full border border-accent/20 text-accent',
+        compact ? 'text-[10px] px-2 py-0.5' : 'text-xs px-3 py-1',
+      ]}
+    >
+      {tag}
+    </span>
+  ))}
+</div>

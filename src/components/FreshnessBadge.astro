@@ -1,0 +1,38 @@
+---
+import { getFreshness } from '../lib/freshness';
+
+interface Props {
+  date: Date;
+  comingSoon?: boolean;
+}
+
+const { date, comingSoon = false } = Astro.props;
+
+const freshness = getFreshness(date);
+
+const dotClass = {
+  molten: 'bg-accent ember-dot',
+  glowing: 'bg-accent opacity-70',
+  tempered: 'bg-warm-gray',
+  forged: 'bg-warm-dim',
+}[freshness.tier];
+
+const labelClass = {
+  molten: 'text-accent',
+  glowing: 'text-accent opacity-70',
+  tempered: 'text-warm-gray',
+  forged: 'text-warm-dim',
+}[freshness.tier];
+---
+
+{comingSoon ? (
+  <span class="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-accent">
+    <span class="inline-block w-1.5 h-1.5 rounded-full bg-accent ember-dot"></span>
+    Coming Soon
+  </span>
+) : (
+  <span class="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em]">
+    <span class:list={['inline-block w-1.5 h-1.5 rounded-full', dotClass]}></span>
+    <span class={labelClass}>{freshness.label}</span>
+  </span>
+)}
