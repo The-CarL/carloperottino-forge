@@ -48,6 +48,79 @@ The agent tries to act across privilege boundaries. In the early patterns, Dave 
 
 Each notebook ends with a **"What went wrong"** section that names the vulnerability the next pattern fixes. Read them in order and the reasoning behind each layer of auth infrastructure becomes obvious.
 
+## The plugin architecture
+
+The core design decision: each auth pattern is a self-contained plugin with exactly two files.
+
+```
+patterns/p01_service_credential/
+├── mcp_auth.py      # How the MCP server adds auth to outbound requests
+├── service_auth.py  # How the service extracts identity from inbound requests
+└── notebook.ipynb   # Teaching narrative
+```
+
+This repeats for all eight patterns. The framework handles agent wiring, MCP plumbing, and service scaffolding. Each pattern only owns its auth logic.
+
+### The MCP side: `AuthHandler`
+
+Every pattern's `mcp_auth.py` subclasses a two-method interface:
+
+```python
+class AuthHandler:
+    async def prepare_request(self, user_context, headers):
+        """Add auth credentials to outbound request headers."""
+        return headers
+
+    async def before_tool_call(self, user_context, tool_name):
+        """Pre-call authorization gate. Return True to proceed."""
+        return True
+```
+
+Pattern 1 just adds an API key header. Pattern 5 forwards the user's JWT as a Bearer token. Pattern 6 calls Keycloak's token exchange endpoint to narrow the audience before forwarding. The interface stays the same; only the auth logic changes.
+
+### The service side: `Identity`
+
+Each pattern's `service_auth.py` exports identity extraction functions that return a single dataclass:
+
+```python
+@dataclass
+class Identity:
+    method: str   # none, api_key, string_id, jwt, scoped_jwt
+    user_id: str | None = None
+    claims: dict[str, Any] | None = None
+    raw_token: str | None = None
+```
+
+The framework provides reusable extractors in `auth_presets.py` for common patterns: API key validation, unverified JWT decoding, JWKS-validated JWT verification, OPA integration. Patterns either use these directly or customize them.
+
+### Runtime wiring
+
+`PatternRunner` dynamically loads each pattern's two files at runtime:
+
+```python
+runner = PatternRunner("p01_service_credential")
+await runner.start()
+await runner.run_as("alice", "What are my expenses?")
+```
+
+It imports the pattern's `auth_handler` and `get_identity` functions, then injects them into the MCP server and FastAPI service factories. No central registry. No plugin manager. Just dynamic import and dependency injection.
+
+### Why isolation over abstraction
+
+In production you'd have a single flexible auth layer that supports multiple strategies. I deliberately didn't do that here. Each pattern has its own auth code on both the MCP side and the service side, so you can read exactly what happens at each boundary without tracing through abstractions.
+
+The call flow for every pattern is the same:
+
+```
+Agent → MCP Server → auth_handler.prepare_request() → FastAPI Service → get_identity() → filter/authorize → respond
+```
+
+Pattern 1's `prepare_request` adds `X-API-Key: shared_secret`. Pattern 7's is identical to pattern 5 (just forwards the JWT), because all the complexity moved to the service side where OPA evaluates relationship-based policies against JWT claims. You can see exactly where the auth boundary shifted by diffing two files.
+
+### What the service sees
+
+Each notebook ends by printing what the service actually received. In pattern 1, the service sees `Identity(method="api_key", user_id=None)` — it knows a valid API key was used, but has no idea who the user is. By pattern 7, it sees `Identity(method="jwt", user_id="alice", claims={role: "employee", department: "engineering", reports_to: "bob"})` and can enforce per-resource policies: Alice can read her own expenses, Bob can approve expenses for his reports, Dave can only read platform-wide documents.
+
 ## Tech stack
 
 - **Keycloak**: IdP for user auth, role assignment, and token issuance. Runs in Docker with pre-configured realms, clients, and users.
