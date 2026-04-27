@@ -1,8 +1,8 @@
 ---
-title: "LLM Limitations Catalog"
-tagline: "A growing collection of tiny projects that probe what LLMs still aren't good at"
+title: "LLM vs. The Right Tool"
+tagline: "Head-to-head notebooks pitting LLMs against the classical methods built for the job"
 date: 2026-04-27
-tags: [Python, LLM, Evals]
+tags: [Python, LLM, ML, Evals]
 categories: [AI, Research]
 comingSoon: true
 links: {}
@@ -10,29 +10,50 @@ links: {}
 
 ## Why I'm building this
 
-It's easy to get swept up in what LLMs *can* do. Every release cycle brings a new flagship that nails another category of task, and the headlines move on. The interesting part — the part I want to understand for myself — is the stuff that's still stubbornly hard. The places where models confidently produce wrong answers, lose the thread on long contexts, miscount, hallucinate citations, or quietly drift away from the instruction halfway through a generation.
+LLMs have become the default answer to almost any problem that involves data and a prompt. A lot of the time they're the wrong answer — not because they fail outright, but because there's a smaller, faster, cheaper, better-calibrated tool that's been quietly solving that exact problem for decades. I want a hands-on map of where that's true.
 
-I want a hands-on map of those failure modes. Not a paper. Not a benchmark report. A catalog of small, runnable samples I can come back to as models evolve.
+This catalog is a learning piece for me as much as anything else. Building each comparison from scratch is the fastest way I know to actually internalize where the frontier model earns its keep and where a 200-line scikit-learn script wins on every axis that matters.
 
 ## What I'm building
 
-A repository of minimal projects, each one targeting a specific category of weakness. Every sample is small enough to read in one sitting and self-contained enough to run against any model.
+A repository of small, self-contained head-to-head samples. Each one takes a real task, implements it twice — once with an LLM and once with the classical method built for it — and reports the same metrics on both sides.
 
-**Categories I want to cover**:
+**Comparison axes, held constant across every sample**:
 
-- **Counting and arithmetic under disguise**: tasks where the math is trivial but the framing trips models up
-- **Long-context fidelity**: needle-in-a-haystack variants, but also "did the model actually use the context or paraphrase from priors"
-- **Instruction drift**: multi-step instructions where adherence degrades as the output grows
-- **Calibrated uncertainty**: probing whether a model knows what it doesn't know, vs. confidently filling in
-- **Tool-use brittleness**: scenarios where the right action is to *not* call the tool, or to call it with a slightly modified argument
-- **Self-consistency**: same question phrased multiple ways, looking for stability of reasoning rather than stability of answer
+- **Accuracy / quality** on a held-out test set
+- **Latency** per inference
+- **Cost** per inference (tokens vs. compute)
+- **Sample efficiency** — how much labeled data each side needs to be useful
+- **Calibration** — does the confidence score mean anything
+- **Determinism** — same input, same output, run after run
 
-Each sample ships with a short writeup: what the failure looks like, why I think it happens, and what changes (if anything) across model generations.
+**Categories the catalog will cover**:
+
+- **Binary & multi-class classification** on tabular data — gradient boosting vs. LLM-as-classifier
+- **Regression on numeric features** — linear / GBM vs. "predict this number from a JSON row"
+- **Time-series forecasting** — ARIMA, Prophet, state-space models vs. asking the LLM
+- **Anomaly detection** — Isolation Forest, control charts, autoencoders vs. LLM "does this look weird"
+- **Clustering & segmentation** — K-means / HDBSCAN vs. LLM grouping
+- **Recommendations** — matrix factorization / collaborative filtering vs. LLM "what would they like"
+- **Survival analysis** — Cox proportional hazards on churn data vs. LLM
+- **Causal inference** — propensity scoring, DiD, IV vs. LLM "what's the effect"
+- **Optimization & scheduling** — LP/MIP solvers vs. LLM resource assignment
+- **Routing** — OR-tools on TSP/VRP vs. LLM
+- **Symbolic math** — SymPy vs. LLM algebra and calculus
+- **OCR** — Tesseract / PaddleOCR vs. multimodal LLM on dense documents
+- **Lexical retrieval** — BM25 vs. pure-LLM search
+- **Learning-to-rank** — LambdaMART on click data vs. LLM reranking
+
+Every notebook ends the same way: a side-by-side table on the six axes above, plus a short writeup on what the LLM actually got wrong (or right) and why.
+
+## What I expect to find
+
+My prior is that the classical method wins on cost, latency, and calibration in nearly every category, and wins on accuracy in most of them. The interesting cases are the ones where the LLM is competitive — usually because the task involves messy unstructured input, very few examples, or a need to explain its reasoning in natural language. Those edges are exactly what I want to map.
 
 ## How this connects to the rest of the forge
 
-This pairs naturally with the [LLM Playground](/projects/llm-playground) — the playground is the surface for running prompts side-by-side, this catalog is the curated set of prompts worth running. Over time I'd like the catalog entries to feed directly into the playground's built-in prompt library.
+This pairs naturally with the [LLM Playground](/projects/llm-playground) — the playground is the surface for running prompts side-by-side across providers; this catalog is the curated set of tasks where running a prompt at all is the wrong move. Over time I'd like the catalog entries to feed back into the playground as reference benchmarks.
 
 ## The learning piece
 
-I'm being upfront that this is as much for me as for anyone else. Building a personal taxonomy of LLM weaknesses is the fastest way I know to actually internalize where the technology is and isn't reliable. The artifact is useful; the process of producing it is the point.
+I'm being upfront that this is partly a study guide. Building a personal taxonomy of "LLM vs. the right tool" is the fastest way I know to develop honest intuition about where this technology actually fits — and where the unglamorous, well-understood method is still the answer.
