@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import Analytics from '@vercel/analytics/astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 
 interface Props {
@@ -60,7 +59,40 @@ const bodyClass = fullPage
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
 
-    <Analytics />
+    <script>
+      import { inject } from '@vercel/analytics';
+
+      // Self-exclusion: visit `?me=1` to opt out of analytics on this device,
+      // `?me=0` to opt back in. Persisted via localStorage.
+      function isOwner(): boolean {
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const me = params.get('me');
+          if (me === '1' || me === '0') {
+            if (me === '1') localStorage.setItem('is_owner', '1');
+            else localStorage.removeItem('is_owner');
+            params.delete('me');
+            const search = params.toString();
+            history.replaceState(
+              null,
+              '',
+              window.location.pathname +
+                (search ? '?' + search : '') +
+                window.location.hash
+            );
+          }
+          return localStorage.getItem('is_owner') === '1';
+        } catch {
+          return false;
+        }
+      }
+
+      if (isOwner()) {
+        console.info('[analytics] excluded as owner');
+      } else {
+        inject();
+      }
+    </script>
   </head>
   <body class={bodyClass}>
     <div class="fixed top-5 right-5 z-50">
