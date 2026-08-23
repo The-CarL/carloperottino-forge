@@ -35,4 +35,11 @@ export const externalProjects: ExternalProject[] = [
     language: 'Python',
     topics: ['LLMs', 'PyTorch', 'Education'],
   },
+  {
+    title: 'Perspectv',
+    description: 'AI-powered competitive intelligence engine for generating personalized executive outreach messages in B2B sales.',
+    githubUrl: 'https://github.com/The-CarL/perspectv',
+    language: 'Python',
+    topics: ['AI Agents', 'RAG', 'B2B Sales'],
+  },
 ];
