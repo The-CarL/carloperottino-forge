@@ -8,6 +8,12 @@ export interface ExternalProject {
 
 export const externalProjects: ExternalProject[] = [
   {
+    title: 'Bitwright',
+    description: 'An Apple-1-inspired computer built in Logisim-evolution, with a gate-built 6502 CPU and a text terminal.',
+    githubUrl: 'https://github.com/The-CarL/bitwright',
+    topics: ['6502', 'Digital Logic', 'Logisim-evolution'],
+  },
+  {
     title: 'NetNudge',
     description: 'AI-powered contact management and personalized outreach for your professional network.',
     githubUrl: 'https://github.com/The-CarL/netnudge-mvp',
