@@ -6,7 +6,7 @@ updatedDate: 2026-04-10
 tags: [Python, Jupyter, Docker, Keycloak, OPA, FastAPI, OAuth]
 categories: [Security, AI Agents, Identity]
 featured: true
-thumbnail: "/projects/exploring-agent-auth/thumbnail-v2.webp"
+thumbnail: "/projects/exploring-agent-auth/thumbnail-v3.webp"
 links:
   github: "https://github.com/The-CarL/exploring-agent-auth"
 ---
