@@ -1,12 +1,13 @@
 ---
 title: "Skyjo Strategy Lab"
-tagline: "When is it worth passing up a column clear? A simulator, a set of trained opponents, and an offline coach for family game night."
+tagline: "When is it worth passing up a column clear? Play against trained opponents or try a tested family rule at your own table."
 date: 2026-11-26
 tags: [TypeScript, Python, scikit-learn]
 categories: [Games, Machine Learning]
 draft: false
 thumbnail: "/projects/skyjo-strategy-lab/clear-or-trade.png"
 links:
+  live: "https://skyjo.carloperottino.com/"
   github: "https://github.com/The-CarL/skyjo-strategy-lab"
 ---
 
@@ -44,4 +45,8 @@ Would aiming for the eventual win make the network a better player? We tested th
 
 ## Try it at your table
 
-Extract the family kit and open `skyjo-coach.html` in a browser. Enter your face-up cards and the top discard to see the suggested move. You can switch between the family rule and the whole-match network on the same board, or put the phone away and use the printable cards. The coach works offline. [Download the family kit (ZIP)](https://github.com/The-CarL/skyjo-strategy-lab/raw/refs/heads/main/downloads/skyjo-family-kit.zip)
+Play a full game against one to seven computer opponents. Choose a style for each seat to see how a card counter, a decision tree, and a neural network handle the same table. [Play Skyjo](https://skyjo.carloperottino.com/)
+
+For a game with physical cards, enter your face-up cards and the top discard to see the suggested move. You can switch between the family rule and the whole-match network on the same board. [Open the table coach](https://skyjo.carloperottino.com/coach)
+
+To use the coach offline, extract the family kit and open `skyjo-coach.html` in a browser. The kit also includes printable strategy cards. [Download the family kit (ZIP)](https://github.com/The-CarL/skyjo-strategy-lab/raw/refs/heads/main/downloads/skyjo-family-kit.zip)
