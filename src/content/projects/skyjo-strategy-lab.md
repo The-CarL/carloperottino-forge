@@ -72,7 +72,7 @@ Here is a position where the two newer networks disagree. A 1 and a 7 are showin
 
 ### Two opponents that score every legal move
 
-- **All-moves board evaluator** considers even a swap that raises its visible total. With a 7 above a 6 and all other cards hidden, it takes a discarded 7 for the 6. The extra point buys a pair. Its weights were tuned in complete simulated matches. To value a flip that might clear a column, it uses the matching card's frequency in a fresh deck.
+- **All-moves board evaluator** considers even a swap that raises its visible total. With a 7 above a 6 and a 2 as its only other visible card, it takes a discarded 7 for the 6. The extra point buys a pair. Its weights were tuned in complete simulated matches. To value a flip that might clear a column, it uses the matching card's frequency in a fresh deck.
 - **All-moves table evaluator** uses the same move scores and adds what its rivals are showing. It puts more value on revealing a card if a rival has at most one hidden card left. Once someone has at least 70 total points, the projected match standings also influence whether it closes the round. [Expanded-action experiments](https://github.com/The-CarL/skyjo-strategy-lab/blob/main/reports/phase2/expanded.md)
 
 ## Try it at your table
